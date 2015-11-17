@@ -1,0 +1,74 @@
+<html>
+<head><script src="/home/mahendra/node/node_modules/binaryjs/dist/binary.js"></script>
+<!script src="http://cdn.binaryjs.com/0/binary.js" type="text/javascript" language="javascript"><!/script>
+<script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript" language="javascript"></script>
+
+<script src="https://cdn.webrtc-experiment.com/RecordRTC.js"></script>
+<script src="https://cdn.webrtc-experiment.com/gif-recorder.js"></script>
+<script src="https://cdn.webrtc-experiment.com/getScreenId.js"></script>
+<!-- for Edige/FF/Chrome/Opera/etc. getUserMedia support -->
+<script src="https://cdn.rawgit.com/webrtc/adapter/master/adapter.js"></script>
+<script src="https://cdn.rawgit.com/webrtc/adapter/master/adapter.js"></script>
+<script src="https://cdn.webrtc-experiment.com/MediaStreamRecorder.js"> </script>
+</head>
+<body>
+
+<video autoplay></video>
+
+
+<script>
+
+  var errorCallback = function(e) {
+    console.log('Reeeejected!', e);
+  };
+  
+
+ // Not showing vendor prefixes.
+ // navigator.getUserMedia({video: true, audio: true}, function(localMediaStream) {
+    var video = document.querySelector('video');
+   // video.src = window.URL.createObjectURL(localMediaStream);
+
+
+  var client = new BinaryClient('ws://localhost:8000');
+
+ 		
+//		var  stream = client.createStream(); // Send meta data to identify streamer
+		//video.src = URL.createObjectURL(blob);
+			
+		function sleep(milliseconds) {
+		  var start = new Date().getTime();
+		  for (var i = 0; i < 1e7; i++) {
+		    if ((new Date().getTime() - start) > milliseconds){
+		      break;
+		    }
+  		}
+	       }
+
+
+
+
+
+
+//	});
+//	});
+//	client.on('open', function(stream, meta){
+//		console.log("On open trigeered");
+//		});
+    client.on('stream', function(stream, meta){    
+   //	if (meta === 'fromserver') {
+		stream.on('data', function (data) {
+		 video.src = window.URL.createObjectURL(data);
+	});
+	//}
+      });
+
+
+
+	client.on('data', function(stream, meta){    
+   		video.src = URL.createObjectURL(stream);
+	});	
+//}, errorCallback);	
+
+</script>
+</body>
+</html>

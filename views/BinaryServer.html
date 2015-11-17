@@ -1,0 +1,99 @@
+<html>
+<head><script src="/home/mahendra/node/node_modules/binaryjs/dist/binary.js"></script>
+<!script src="http://cdn.binaryjs.com/0/binary.js" type="text/javascript" language="javascript"><!/script>
+<script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript" language="javascript"></script>
+
+<script src="https://cdn.webrtc-experiment.com/RecordRTC.js"></script>
+<script src="https://cdn.webrtc-experiment.com/gif-recorder.js"></script>
+<script src="https://cdn.webrtc-experiment.com/getScreenId.js"></script>
+<!-- for Edige/FF/Chrome/Opera/etc. getUserMedia support -->
+<script src="https://cdn.rawgit.com/webrtc/adapter/master/adapter.js"></script>
+<script src="https://cdn.rawgit.com/webrtc/adapter/master/adapter.js"></script>
+<script src="https://cdn.webrtc-experiment.com/MediaStreamRecorder.js"> </script>
+</head>
+<body>
+
+<video autoplay></video>
+
+
+<script>
+
+  var errorCallback = function(e) {
+    console.log('Reeeejected!', e);
+  };
+  
+	navigator.getUserMedia  = navigator.getUserMedia ||
+                          navigator.webkitGetUserMedia ||
+                          navigator.mozGetUserMedia ||
+                          navigator.msGetUserMedia;
+
+ // Not showing vendor prefixes.
+  navigator.getUserMedia({video: true, audio: true}, function(localMediaStream) {
+    var video = document.querySelector('video');
+   // video.src = window.URL./createObjectURL(localMediaStream);
+
+try{
+  var client = new BinaryClient('ws://localhost:8000');
+}
+catch(error)
+{
+	console.log("Caught error");
+}
+    // Received new stream from server!
+//	client.on('open',function(s,meta){
+//		bStream = client.createStream(s,'toserver');
+//
+//		recorder = window.RecordRTC(stream, options);
+//		recorder.startRecording();
+
+		
+		var options = {
+		   mimeType: 'video/mp4', // audio/ogg or video/webm
+		    audioBitsPerSecond : 128000,
+		    videoBitsPerSecond : 2500000,
+		    bitsPerSecond: 2500000  // if this is provided, skip above two
+		}
+		
+		var  stream = client.createStream(); // Send meta data to identify streamer
+		var recorder = new MediaStreamRecorder(localMediaStream, options);
+		recorder.mimeType = 'video/mp4';
+		
+		recorder.ondataavailable = function (blob) {
+		//video.src = blob;//URL.createObjectURL(blob);
+		stream.write(blob);		
+		};
+			
+			recorder.start(100);
+			
+			
+		function sleep(milliseconds) {
+		  var start = new Date().getTime();
+		  for (var i = 0; i < 1e7; i++) {
+		    if ((new Date().getTime() - start) > milliseconds){
+		      break;
+		    }
+  		}
+	       }
+
+
+
+
+
+
+//	});
+//	});
+//	client.on('open', function(stream, meta){
+//		console.log("On open trigeered");
+//		});
+//    client.on('stream', function(stream, meta){    
+//   	if (meta === 'fromserver') {
+//		stream.on('data', function (data) {
+//		 var dataArr = new Uint8Array(data);
+//	});
+//	}
+//      });	
+}, errorCallback);	
+
+</script>
+</body>
+</html>
