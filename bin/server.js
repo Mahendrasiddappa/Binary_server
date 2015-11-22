@@ -20,7 +20,7 @@ server.on('connection', function(client){
 
         stream.on('data',function(data)
         {
-            console.log(data);
+            console.log("data received");
             for(var i=0;i<connections.length;i++)
             {
                try {
@@ -30,6 +30,7 @@ server.on('connection', function(client){
                 catch(error)
                 {
                     removeItem(i);
+                    i --;
                 }
             }
         });
@@ -54,8 +55,8 @@ var addToChannelList = function(client)
 var removeItem = function(Item)
 {
 
-    var prior = connections.splice(0,Item-1);
-    var next = connections.splice(Item+1,Item.length);
+    var prior = connections.slice(0,Item);
+    var next = connections.slice(Item+1,connections.length);
     connections = prior.concat(next);
 
 
