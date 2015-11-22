@@ -1,4 +1,4 @@
-var BinaryServer = require('/home/mahendra/node/node_modules/binaryjs').BinaryServer;
+var BinaryServer = require('binaryjs').BinaryServer;
 var fs = require('fs');
 
 var connections = [];
