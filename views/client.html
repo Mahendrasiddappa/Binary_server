@@ -1,0 +1,128 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+<script src="http://cdn.binaryjs.com/0/binary.js" type="text/javascript" language="javascript"></script>
+<script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript" language="javascript"></script>
+<script src="https://cdn.webrtc-experiment.com/RecordRTC.js"></script>
+<script src="https://cdn.webrtc-experiment.com/gif-recorder.js"></script>
+<script src="https://cdn.webrtc-experiment.com/getScreenId.js"></script>
+<script src="https://cdn.rawgit.com/webrtc/adapter/master/adapter.js"></script>
+<script src="https://cdn.rawgit.com/webrtc/adapter/master/adapter.js"></script>
+<script src="https://cdn.webrtc-experiment.com/MediaStreamRecorder.js"> </script>
+<script src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/aes.js"></script> 
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/1.6.4/shaka-player.compiled.js"></script>
+
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+<link href="http://fonts.googleapis.com/css?family=Open+Sans:300,600,700" rel="stylesheet" />
+<link href="default.css" rel="stylesheet" type="text/css" media="all" />
+</head>
+    
+<body>
+    
+<div id="header-wrapper">
+	<div id="header" class="container">
+		<div id="logo">
+			<h1><a href="#">MPEG - DASH</a></h1>
+		</div>
+		
+	</div>
+</div>
+    
+<div id="page" class="container">
+	<div id="content">
+		<div class="title">
+			<h2>Video Player</h2>
+</div>
+			<video width="650" height="600" autoplay=""></video>
+        <script>
+    var channelName;
+        
+    var getQueryString = function ( field, url ) {
+    var href = url ? url : window.location.href;
+    var reg = new RegExp( '[?&]' + field + '=([^&#]*)', 'i' );
+    var string = reg.exec(href);
+    return string ? string[1] : null;
+};
+
+if(getQueryString('cname'))
+{
+    channelName = getQueryString('cname');
+}
+
+
+var channelname = getQueryString('cname');
+function loadPage(queryString) {
+    window.location.href = "client.html?cname=" + queryString;
+}
+  var errorCallback = function(e) {
+    console.log('Reeeejected!', e);
+  };
+  
+function initPlayer() {
+      // Install polyfills.
+      shaka.polyfill.installAll();
+
+      // Find the video element.
+      var video = document.getElementById('video');
+
+      // Construct a Player to wrap around it.
+      var player = new shaka.player.Player(video);
+
+      // Attach the player to the window so that it can be easily debugged.
+      window.player = player;
+
+      // Listen for errors from the Player.
+      player.addEventListener('error', function(event) {
+        console.error(event);
+      });
+
+      // Construct a DashVideoSource to represent the DASH manifest.
+      var mpdUrl = 'http://52.87.224.162:8015/'+channelname+'.mpd';
+      var estimator = new shaka.util.EWMABandwidthEstimator();
+      var source = new shaka.player.DashVideoSource(mpdUrl, null, estimator);
+
+      // Load the source into the Player.
+      player.load(source);
+    }
+    document.addEventListener('DOMContentLoaded', initPlayer);
+
+</script>
+
+	</div>
+	<div id="sidebar">
+		<div id="sbox1">
+			<div class="title">
+				<h2>Live Channels</h2>
+			</div>
+			<ul class="style2">
+				
+                                
+                                
+                                <li><button onclick="loadPage('kartik')">Channel1</button></li>
+				<li><button onclick="loadPage('channel1')">Channel2</button></li>
+				<li><button onclick="loadPage('channel2')">Channel3</button></li>
+				
+			</ul>
+		</div>
+            
+            <div id="sbox2">
+			<div class="title">
+				<h2>On Demand Content</h2>
+			</div>
+			<ul class="style2">
+				 <li><button onclick="loadPage('Jimmy_dash')">Channel1</button></li>
+				<li><button onclick="loadPage('channel1')">Channel2</button></li>
+				<li><button onclick="loadPage('channel2')">Channel3</button></li>
+				
+			</ul>
+		</div>
+		
+	</div>
+</div>
+    
+     
+</body>
+</html>

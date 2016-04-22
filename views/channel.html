@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+<link href="http://fonts.googleapis.com/css?family=Open+Sans:300,600,700" rel="stylesheet" />
+<link href="default.css" rel="stylesheet" type="text/css" media="all" />
+<script>
+function ValidationEvent(){
+    
+    if(VirefyInput())
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+        
+}
+function VirefyInput()
+{
+    var cname = document.forms["myChannel"]["cname"].value;
+    if( /[^a-zA-Z0-9]/.test( cname ) ) {
+       alert('Input is not alphanumeric');
+       return false;
+    }
+    return true;
+}
+</script>
+</head>
+    
+<body>
+        
+<div id="header-wrapper">
+	<div id="header" class="container">
+		<div id="logo">
+			<h1><a href="#">MPEG - DASH</a></h1>
+		</div>
+	
+	</div>
+</div>
+    
+   <div id="page" class="container">
+       <form name="myChannel" action="server.html" onsubmit="return ValidationEvent()" method="get" >
+           Channel Name: <input type="text" name="cname" id="cname "/>
+           <input type="submit" value="Submit"/>
+          </form>
+</div>
+    
+     
+</body>
+</html>
